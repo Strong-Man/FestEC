@@ -1,9 +1,12 @@
 package com.example.coolz.latte.net;
 
+import android.content.Context;
+
 import com.example.coolz.latte.net.callback.IError;
 import com.example.coolz.latte.net.callback.IFailure;
 import com.example.coolz.latte.net.callback.IRequest;
 import com.example.coolz.latte.net.callback.ISuccess;
+import com.example.coolz.latte.ui.LoaderStyle;
 
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -23,6 +26,8 @@ public class RestClientBuilder {
     private IFailure mIFailure = null;
     private IError mIError = null;
     private RequestBody mBody = null;
+    private Context mContext = null;
+    private LoaderStyle mLoaderStyle = null;
 
     RestClientBuilder() {
     }
@@ -67,7 +72,13 @@ public class RestClientBuilder {
         return this;
     }
 
+    public  final  RestClientBuilder loader(Context context, LoaderStyle style){
+        this.mContext = context;
+        this.mLoaderStyle = style;
+        return this;
+    }
+
     public final RestClient build(){
-        return  new RestClient(mUrl,PARAMS,mIRequest,mISuccess,mIError,mIFailure,mBody);
+        return  new RestClient(mUrl,PARAMS,mIRequest,mISuccess,mIError,mIFailure,mBody,mContext,mLoaderStyle);
     }
 }

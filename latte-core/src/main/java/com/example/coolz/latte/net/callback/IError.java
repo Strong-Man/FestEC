@@ -5,5 +5,5 @@ package com.example.coolz.latte.net.callback;
  */
 
 public interface IError {
-    void onErrod(int code, String msg);
+    void onError(int code, String msg);
 }
