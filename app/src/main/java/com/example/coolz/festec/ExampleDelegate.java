@@ -25,7 +25,7 @@ public class ExampleDelegate extends LatteDelegate {
 
     @Override
     public void onBindView(@Nullable Bundle savedInstanceState, @NonNull View rootView) {
-                testRestClient();
+        testRestClient();
     }
 
     private void testRestClient() {
@@ -34,7 +34,7 @@ public class ExampleDelegate extends LatteDelegate {
                 .success(new ISuccess() {
                     @Override
                     public void onSuccess(String response) {
-                        Toast.makeText(getContext(),response, Toast.LENGTH_LONG).show();
+//                        Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
                     }
                 }).failure(new IFailure() {
             @Override
@@ -46,6 +46,6 @@ public class ExampleDelegate extends LatteDelegate {
             public void onError(int code, String msg) {
 
             }
-        }).build().get();
+        }).loader(getContext()).build().get();
     }
 }
