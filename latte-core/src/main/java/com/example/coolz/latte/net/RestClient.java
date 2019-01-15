@@ -95,7 +95,7 @@ public class RestClient {
     }
 
     private Callback<String> getRequestCallback(){
-        return new RequestCallbacks(REQUEST,SUCCESS,FAILURE,ERROR);
+        return new RequestCallbacks(REQUEST,SUCCESS,FAILURE,ERROR,LOADER_STYLE);
     }
 
     public final void get() {
