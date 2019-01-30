@@ -1,6 +1,9 @@
 package com.example.coolz.latte.app;
 
+import java.util.ArrayList;
 import java.util.WeakHashMap;
+
+import okhttp3.Interceptor;
 
 /**
  * Created by zpw on 2018/12/3.
@@ -8,9 +11,10 @@ import java.util.WeakHashMap;
 
 public class Configurator {
 
-    private static final WeakHashMap<String, Object> LATTE_CONFIGS = new WeakHashMap<>();
+    private static final WeakHashMap<Object, Object> LATTE_CONFIGS = new WeakHashMap<>();
+    private static final ArrayList<Interceptor> INTERCEPTORS = new ArrayList<>();
 
-    final WeakHashMap<String, Object> getLatteConfigs() {
+    final WeakHashMap<Object, Object> getLatteConfigs() {
         return LATTE_CONFIGS;
     }
 
@@ -40,6 +44,18 @@ public class Configurator {
         if (!isReady) {
             throw new RuntimeException("Configuration is not ready,call configure");
         }
+    }
+
+    public final Configurator withInterceptor(Interceptor interceptor) {
+        INTERCEPTORS.add(interceptor);
+        LATTE_CONFIGS.put(ConfigKeys.INTERCEPTOR.name(), INTERCEPTORS);
+        return this;
+    }
+
+    public final Configurator withInterceptors(ArrayList<Interceptor> interceptors) {
+        INTERCEPTORS.addAll(interceptors);
+        LATTE_CONFIGS.put(ConfigKeys.INTERCEPTOR, INTERCEPTORS);
+        return this;
     }
 
     @SuppressWarnings("unchecked")

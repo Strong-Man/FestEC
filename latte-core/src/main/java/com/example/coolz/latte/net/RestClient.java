@@ -33,20 +33,36 @@ public class RestClient {
     private final LoaderStyle LOADER_STYLE;
     private final Context CONTEXT;
     private final File FILE;
+    private final String DOWNLOAD_DIR;
+    private final String EXTENSION;
+    private final String NAME;
 
-     RestClient(String url, Map<String, Object> params,
-                      IRequest request, ISuccess success,
-                      IError error, IFailure failure, RequestBody body,Context context, LoaderStyle loaderStyle,File file) {
+    RestClient(String url,
+               Map<String, Object> params,
+               String downloadDir,
+               String extension,
+               String name,
+               IRequest request,
+               ISuccess success,
+               IFailure failure,
+               IError error,
+               RequestBody body,
+               File file,
+               Context context,
+               LoaderStyle loaderStyle) {
         this.URL = url;
-        this.PARAMS.putAll(params);
+        PARAMS.putAll(params);
+        this.DOWNLOAD_DIR = downloadDir;
+        this.EXTENSION = extension;
+        this.NAME = name;
         this.REQUEST = request;
         this.SUCCESS = success;
-        this.ERROR = error;
         this.FAILURE = failure;
+        this.ERROR = error;
         this.BODY = body;
+        this.FILE = file;
         this.CONTEXT = context;
         this.LOADER_STYLE = loaderStyle;
-        this.FILE = file;
     }
 
     private void request(HttpMethod method){
@@ -82,9 +98,9 @@ public class RestClient {
             case UPLOAD:
                 final RequestBody requestBody =
                         RequestBody.create(MediaType.parse(MultipartBody.FORM.toString()), FILE);
-//                final MultipartBody.Part body =
-//                        MultipartBody.Part.createFormData("file", FILE.getName(), requestBody);
-//                call = service.upload(URL, body);
+                final MultipartBody.Part body =
+                        MultipartBody.Part.createFormData("file", FILE.getName(), requestBody);
+                call = service.upload(URL, body);
                 break;
             default:
                 break;
@@ -116,5 +132,9 @@ public class RestClient {
              }
              request(HttpMethod.POST_RAW);
          }
+    }
+
+    public final void  dowwnload(){
+
     }
 }
