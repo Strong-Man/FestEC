@@ -8,15 +8,14 @@ import com.example.coolz.latte.net.callback.IRequest;
 import com.example.coolz.latte.net.callback.ISuccess;
 import com.example.coolz.latte.ui.LoaderStyle;
 
+import java.io.File;
 import java.util.Map;
 import java.util.WeakHashMap;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
-/**
- * Created by zpw on 2019/1/4.
- */
+
 
 public class RestClientBuilder {
     private static final Map<String, Object> PARAMS = RestCreator.getParams();
@@ -28,6 +27,7 @@ public class RestClientBuilder {
     private RequestBody mBody = null;
     private Context mContext = null;
     private LoaderStyle mLoaderStyle = null;
+    private File mFile = null;
 
     RestClientBuilder() {
     }
@@ -67,6 +67,11 @@ public class RestClientBuilder {
         return this;
     }
 
+    public final RestClientBuilder file(File file) {
+        this.mFile = file;
+        return this;
+    }
+
     public final RestClientBuilder onRequest(IRequest request){
         this.mIRequest = request;
         return this;
@@ -85,6 +90,6 @@ public class RestClientBuilder {
     }
 
     public final RestClient build(){
-        return  new RestClient(mUrl,PARAMS,mIRequest,mISuccess,mIError,mIFailure,mBody,mContext,mLoaderStyle);
+        return  new RestClient(mUrl,PARAMS,mIRequest,mISuccess,mIError,mIFailure,mBody,mContext,mLoaderStyle,mFile);
     }
 }

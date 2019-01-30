@@ -11,9 +11,12 @@ import com.example.coolz.latte.net.callback.RequestCallbacks;
 import com.example.coolz.latte.ui.LatteLoader;
 import com.example.coolz.latte.ui.LoaderStyle;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+import java.io.File;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -29,10 +32,11 @@ public class RestClient {
     private final RequestBody BODY;
     private final LoaderStyle LOADER_STYLE;
     private final Context CONTEXT;
+    private final File FILE;
 
      RestClient(String url, Map<String, Object> params,
                       IRequest request, ISuccess success,
-                      IError error, IFailure failure, RequestBody body,Context context, LoaderStyle loaderStyle) {
+                      IError error, IFailure failure, RequestBody body,Context context, LoaderStyle loaderStyle,File file) {
         this.URL = url;
         this.PARAMS.putAll(params);
         this.REQUEST = request;
@@ -42,6 +46,7 @@ public class RestClient {
         this.BODY = body;
         this.CONTEXT = context;
         this.LOADER_STYLE = loaderStyle;
+        this.FILE = file;
     }
 
     private void request(HttpMethod method){
@@ -75,8 +80,8 @@ public class RestClient {
                 call = service.delete(URL, PARAMS);
                 break;
             case UPLOAD:
-//                final RequestBody requestBody =
-//                        RequestBody.create(MediaType.parse(MultipartBody.FORM.toString()), FILE);
+                final RequestBody requestBody =
+                        RequestBody.create(MediaType.parse(MultipartBody.FORM.toString()), FILE);
 //                final MultipartBody.Part body =
 //                        MultipartBody.Part.createFormData("file", FILE.getName(), requestBody);
 //                call = service.upload(URL, body);
@@ -100,5 +105,16 @@ public class RestClient {
 
     public final void get() {
         request(HttpMethod.GET);
+    }
+
+    public final void post(){
+         if(BODY == null){
+             request(HttpMethod.POST);
+         }else{
+             if(!PARAMS.isEmpty()){
+                 throw new RuntimeException("params must be null!");
+             }
+             request(HttpMethod.POST_RAW);
+         }
     }
 }
